@@ -27,13 +27,8 @@ def detr1(x):
 def pred_series(name):
     if name=="EC_day": d=xr.open_dataset(D/"ERA5_DJF_EC_index_1979-2024.nc"); y=d.year.values.astype(int); v=d.korea_nday.values.astype(float); d.close()
     elif name=="EW_day": d=xr.open_dataset(D/"ERA5_DJF_EW_index_1979-2024.nc"); y=d.year.values.astype(int); v=d.korea_nday.values.astype(float); d.close()
-    elif name=="CDHD":                                    # compound = sstd(log1p(HWD)) * DR(-SPEI norm 1979-2024)
-        d=xr.open_dataset(D/"ERA5_JA_HW_index_1979-2024.nc"); yh=d.year.values.astype(int); hwd=d.korea_nday.values.astype(float); d.close()
-        sp=pd.read_csv(D/"SPEI"/"SPEIbase_v2.11_spei3_korea_JA_1901-2024.csv"); sp=sp[(sp.year>=1979)&(sp.year<=2024)]
-        spr=sp.spei3_JA.values.astype(float); spei=(spr-np.nanmean(spr))/np.nanstd(spr,ddof=1)
-        m=pd.DataFrame({"year":yh,"hwd":hwd}).merge(pd.DataFrame({"year":sp.year.values.astype(int),"spei":spei}),on="year")
-        DR=-m.spei.values; zH=np.log1p(m.hwd.values)/np.nanstd(np.log1p(m.hwd.values),ddof=1)
-        y=m.year.values.astype(int); v=zH*DR
+    elif name=="CDHD":                                    # compound hot-dry index (precomputed Korea-mean series)
+        d=xr.open_dataset(D/"ERA5_JA_CDHD_index_1979-2024.nc"); y=d.year.values.astype(int); v=d.korea_nday.values.astype(float); d.close()
     ymap={int(a):b for a,b in zip(y,v)}; return np.array([ymap.get(int(Y),np.nan) for Y in years])
 ONLY=sys.argv[1] if len(sys.argv)>1 else None
 idxlist=[x for x in IDX if (ONLY is None or x[0]==ONLY)]
