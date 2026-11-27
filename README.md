@@ -51,6 +51,15 @@ python src/01_make_predictor_index.py
 python src/02_forecast_catboost.py EC_day   # EC_day | EW_day
 ```
 
+## References
+
+This work applies the **statistical–dynamical (dynamical–statistical) seasonal-forecasting framework** of:
+
+- Choi, J. *et al.* (2024). Dynamical–statistical method for seasonal forecasting of wintertime PM10 concentration in South Korea using multi-model ensemble climate forecasts. *Environmental Research Letters*, **19**, 064073. https://doi.org/10.1088/1748-9326/ad5030
+- Jeong, J.-H., Choi, J., Jeong, J.-Y., Woo, S.-H., Kim, S.-W., Lee, D., Lee, J.-B., & Yoon, J.-H. (2022). A novel statistical–dynamical method for a seasonal forecast of particulate matter in South Korea. *Science of the Total Environment*, **848**, 157699. https://doi.org/10.1016/j.scitotenv.2022.157699
+
+For explainable-AI (SHAP) analysis of Korean extremes, see also Kim *et al.* (2024), *npj Climate and Atmospheric Science* — https://doi.org/10.1038/s41612-024-00722-1.
+
 ## Authors
 
 Jee-Hoon Jeong (정지훈)¹, Gyu-Ri Lee (이규리)¹
