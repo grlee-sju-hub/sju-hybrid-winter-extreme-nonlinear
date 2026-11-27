@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+env/
+
+# Data / outputs (not distributed)
+data/*.nc
+data/*.csv
+data/*.npz
+data/*.xlsx
+!data/README.md
+
+# OS
+.DS_Store
