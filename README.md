@@ -36,8 +36,23 @@ The relationship sign (±) is preserved. The mask is segmented into coherent reg
 
 ## Selected predictors
 
-- **EC (extreme-cold days):** DJF 2-m temperature over Siberia (L0) · September precipitation over the North Pacific (L3) · October precipitation over western Russia (L2)
-- **EW (extreme-warm days):** DJF 2-m temperature over mid-latitude Eurasia (L0) · November 850-hPa temperature over the tropical western Pacific (L1) · DJF 850-hPa temperature over the Bering/Alaska region (L0)
+Same predictor pool as the linear model; CatBoost is a nonlinear tree estimator, so there is no single regression coefficient. L0 = concurrent-winter field (supplied by the dynamical ensemble at forecast time); L1–L3 = observed autumn precursors (L1 = Nov, L2 = Oct, L3 = Sep).
+
+**EC — extreme-cold days**
+
+| predictor | lead | variable | region |
+|---|---|---|---|
+| α | L0 (DJF) | 2-m temperature | Siberia (≈50°N, 105°E) |
+| β | L3 (Sep) | precipitation | central North Pacific (≈44°N, 174°W) |
+| γ | L2 (Oct) | precipitation | western Russia / Ural (≈48°N, 60°E) |
+
+**EW — extreme-warm days**
+
+| predictor | lead | variable | region |
+|---|---|---|---|
+| α | L0 (DJF) | 2-m temperature | subtropical NW Pacific (≈28°N, 137°E) |
+| β | L1 (Nov) | 850-hPa temperature | N. Australia / Maritime Continent (≈14°S, 135°E) |
+| γ | L0 (DJF) | 850-hPa temperature | Gulf of Alaska / Bering (≈58°N, 150°W) |
 
 ## Repository structure
 
