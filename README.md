@@ -11,6 +11,21 @@ This repository contains the **nonlinear (CatBoost) counterpart** of the statist
 - **Estimator:** **CatBoost** (symmetric gradient-boosted trees). CatBoost is chosen for small-sample robustness (strong regularization via oblivious trees + ordered boosting) over XGBoost/LightGBM.
 - **Output:** per-member hybrid forecast (observed lead predictors + C3S-MME L0), aggregated to tercile-category probabilities.
 
+## How the predictors are built
+
+![Predictor pool construction and final selection](docs/pipeline.png)
+
+Predictors are built in **two stages** — an automated, physically-constrained *candidate-pool construction* (identical across all four SJU-Hybrid models) followed by a *final selection* that keeps only the few predictors maximising out-of-sample skill.
+
+**Stage 1 — candidate pool.** The detrended predictand index is correlated against global ERA5 climate fields (T2m, MSL, SST, Z500, U200, V200, T850, Z850, precipitation, …) at lead times of 0–3 months, and the C3S multi-model-ensemble (MME) forecast skill is mapped for each field in parallel. A grid cell becomes a predictor source only where it is physically *and* operationally useful, through a **dual-condition significance mask**:
+
+- **concurrent (L0)** fields must be **both** significantly correlated with the predictand (Spearman, *p* < 0.05) **and** skilfully forecast by the dynamical ensemble (skill significant, *r* > 0) — so the statistical link can actually be exploited at forecast time;
+- **lead (L1–L3)** fields require only observational significance, since they are already observed when the forecast is issued.
+
+The relationship sign (±) is preserved. The mask is segmented into coherent regions by **8-connected component labelling** (periodic in longitude), keeping only clusters of **≥ 100 grid cells**, and each region is reduced to one **cosine-latitude area-mean** index time series. Candidates are ranked by |Spearman| with the predictand, then filtered by a **greedy pairwise-collinearity rule** (drop any with |Spearman| > 0.6 against an already-accepted index) and a **Southern-Hemisphere exclusion** — yielding the *candidate predictor pool* (≈ 70–80 regions per predictand).
+
+**Stage 2 — final selection.** From the pool, **all subsets of up to three predictors** are scored by **leave-one-out cross-validated skill (anomaly correlation, ACC)** with a closed-form LOOCV (PRESS); multicollinearity is bounded by **VIF ≤ 5**, and the selected model's skill is tested against chance by a **permutation test**. Keeping the predictor count small (≤ 3) avoids overfitting the short (~45-season) record. The final predictors feed the regression model (**MLR** in the linear repositories, **CatBoost** in the nonlinear ones) — concurrent (L0) terms supplied operationally by the distribution-calibrated C3S-MME forecast, lead terms by observations.
+
 ## Method (pipeline)
 
 | step | script | description |
