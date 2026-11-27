@@ -1,6 +1,6 @@
-# SHECAST · Winter Extreme (Nonlinear / CatBoost)
+# Statistical–Dynamical Hybrid Model for Hard-to-Predict Climate Variables — Winter EC/EW (Nonlinear / CatBoost)
 
-**SHECAST** (*Statistical Hybrid Ensemble foreCast*) is a hybrid statistical–dynamical seasonal-forecast system that targets **climate variables of low direct dynamical predictability** (air quality, blocking, warm/cold extremes), bridging them to a **multi-model ensemble**'s skilfully-forecast large-scale fields. **This repository is the nonlinear (CatBoost) core for Korean winter extremes.**
+A **statistical–dynamical hybrid** approach to **seasonal prediction of climate variables that dynamical models cannot forecast well directly** — air quality (e.g. PM10), atmospheric blocking, warm/cold extremes — by **bridging** such targets to the large-scale fields a **multi-model ensemble** *does* forecast skilfully. **This repository is the nonlinear (CatBoost) core for Korean winter extremes (EC/EW).**
 
 Machine-learning (gradient-boosted decision trees, **CatBoost**) seasonal prediction of **Korean winter extreme-cold days (EC) and extreme-warm days (EW)** over the December–January–February (DJF) season.
 
@@ -17,7 +17,7 @@ This repository contains the **nonlinear (CatBoost) counterpart** of the statist
 
 ![Predictor pool construction and final selection](docs/pipeline.png)
 
-Predictors are built in **two stages** — an automated, physically-constrained *candidate-pool construction* (identical across all four SHECAST models) followed by a *final selection* that keeps only the few predictors maximising out-of-sample skill.
+Predictors are built in **two stages** — an automated, physically-constrained *candidate-pool construction* (identical across all four model variants — summer/winter × linear/nonlinear) followed by a *final selection* that keeps only the few predictors maximising out-of-sample skill.
 
 **Stage 1 — candidate pool.** The detrended predictand index is correlated against global ERA5 climate fields (T2m, MSL, SST, Z500, U200, V200, T850, Z850, precipitation, …) at lead times of 0–3 months, and the C3S multi-model-ensemble (MME) forecast skill is mapped for each field in parallel. A grid cell becomes a predictor source only where it is physically *and* operationally useful, through a **dual-condition significance mask**:
 
