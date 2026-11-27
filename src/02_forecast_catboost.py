@@ -17,7 +17,7 @@ dz=np.load(D/"predictor_accepted_era5.npz",allow_pickle=True); G=dz["gid"].astyp
 L0=[g for g in gids if LEAD[gi[g]]==0]
 yt=detr(np.array([ym[Y] for Y in Y46])); Xf={g:detr(OBS[gi[g]][[pos[Y] for Y in Y46]]) for g in gids}
 OM={g:np.array([Xf[g][pos[Y]] for Y in EV]).mean() for g in L0}; OSD={g:np.array([Xf[g][pos[Y]] for Y in EV]).std() for g in L0}
-pm=pd.read_csv(D/"c3s_ecew_permember_L0_1993-2016.csv"); pm=pm[pm.gid.isin(L0)]; models=sorted(pm.model.unique())
+pm=pd.read_csv(D/"c3s_ensemble_L0_djf.csv"); pm=pm[pm.gid.isin(L0)]; models=sorted(pm.model.unique())
 MOD={}
 for Y in EV:
     tr=Y46!=Y; MOD[Y]=CatBoostRegressor(**CB); MOD[Y].fit(np.column_stack([Xf[g][tr] for g in gids]),yt[tr])
